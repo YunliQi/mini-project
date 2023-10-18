@@ -1,9 +1,10 @@
 #
 # Protocol class
-#
-import model
 
-class intravenous(model.Model):
+from pkmodel.model import Model
+from pkmodel.solution import Solution
+
+class intravenous(Model):
     """A Pharmokinetic (PK) protocol
 
     Parameters
@@ -19,18 +20,18 @@ class intravenous(model.Model):
                 y[0] = amount - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)
                 y[1] = Qp1 * (y[0] / Vc - y[1] / Vp1)
                 return y
-            self.eqn = steady_intra
+            super().__init__(steady_intra)
         elif Dose == 'instantaneous' or 'Instantaneous':
             def ins_intra(t, y):
                 y[0] = 0 - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)
                 y[1] = Qp1 * (y[0] / Vc - y[1] / Vp1)
                 return y
-            self.eqn = ins_intra
+            super().__init__(ins_intra)
             self.ic = [amount, 0]
         else:
             raise ValueError("You need to specify the type of dose correctly")
         
-class subcutaneous(model.Model):
+class subcutaneous(Model):
     """A Pharmokinetic (PK) protocol
 
     Parameters
@@ -47,14 +48,14 @@ class subcutaneous(model.Model):
                 y[1] = ka * y[0] - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)
                 y[2] = Qp1 * (y[0] / Vc - y[1] / Vp1)
                 return y
-            self.eqn = steady_sub
+            super().__init__(self.eqn, compartment = 3)
         elif Dose == 'instantaneous' or 'Instantaneous':
             def ins_sub(t, y):
                 y[0] = 0 - ka * y[0]
                 y[1] = ka * y[0] - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)
                 y[2] = Qp1 * (y[0] / Vc - y[1] / Vp1)
                 return y
-            self.eqn = ins_sub
+            super().__init__(self.eqn, compartment = 3)
             self.ic = [amount, 0, 0]
         else:
             raise ValueError("You need to specify the type of dose correctly")

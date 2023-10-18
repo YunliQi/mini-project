@@ -12,7 +12,7 @@ class Solution:
         an example paramter
 
     """
-    def __init__(self, compartment, ic, time = [0, 10]):
+    def __init__(self, compartment, ic, time = 10):
         self.ic = ic
         self.time = time
         self.result = [[]] * compartment
