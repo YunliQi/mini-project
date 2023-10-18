@@ -1,8 +1,4 @@
-#
-# pkmodel setuptools script
-#
 from setuptools import setup, find_packages
-
 
 def get_version():
     """
@@ -22,7 +18,6 @@ def get_version():
 
     return version
 
-
 def get_readme():
     """
     Load README.md text for use as description.
@@ -30,42 +25,17 @@ def get_readme():
     with open('README.md') as f:
         return f.read()
 
-
-# Go!
-setup(
-    # Module name (lowercase)
-    name='pkmodel',
-
-    # Version
-    version=get_version(),
-
-    description='An example Python project.',
-
-    long_description=get_readme(),
-
-    license='MIT license',
-
-    # author='',
-
-    # author_email='',
-
-    maintainer='Martin Robinson',
-
-    maintainer_email='martin.robinson@cs.ox.ac.uk',
-
-    url='https://github.com/SABS-R3/2020-software-engineering-projects-pk',
-
-    # Packages to include
-    packages=find_packages(include=('pkmodel', 'pkmodel.*')),
-
-    # List of dependencies
-    install_requires=[
-        # Dependencies go here!
-        'numpy',
-        'matplotlib',
-        'scipy',
-    ],
-    extras_require={
+setup(name='pkmodel',
+      version=get_version(),
+      description='An example python project',
+      long_description=get_readme(),
+      maintainer='Yunli Qi, Dou Hong, Junde Wu',
+      maintainer_email='yunli.qi@dtc.ox.ac.uk',
+      url='https://github.com/YunliQi/mini-project',
+      packages=find_packages(include=('pkmodel', 'pkmodel.*')),
+      install_requires = ["numpy", "matplotlib", "scipy"],
+      license='MIT license',
+      extras_require={
         'docs': [
             # Sphinx for doc generation. Version 1.7.3 has a bug:
             'sphinx>=1.5, !=1.7.3',
@@ -76,5 +46,4 @@ setup(
             # Flake8 for code style checking
             'flake8>=3',
         ],
-    },
-)
+    })

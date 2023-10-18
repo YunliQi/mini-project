@@ -2,10 +2,10 @@
 # Model class
 #
 
+from pkmodel.solution import Solution
+import numpy as np
 import scipy
 import matplotlib.pyplot as plt
-import numpy as np
-from pkmodel.solution import Solution
 
 class Model(Solution):
     """A Pharmokinetic (PK) model
