@@ -8,8 +8,9 @@ import matplotlib.pyplot as plt
 
 def exponential_decay(t, y): return -0.5 * y
 
-from pkmodel import sim
-sim_object= sim(exponential_decay, 0.1, 10, 0)
+from pkmodel.model import Model
+a = Model(exponential_decay, compartment = 1)
+sim_object= a.sim(a.ic)
 class test_sim(sim_object):
     sim_object.result = scipy.integrate.solve_ivp(sim_object.eqn, [0, sim_object.time], sim_object.ic, max_step = 0.01)
     npt.assert_almost_equal(sim_object.result.y[5], 0.1 * np.exp(-0.5 * sim_object.result.t)[5], decimal=2)
