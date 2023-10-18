@@ -12,6 +12,8 @@ class Solution:
         an example paramter
 
     """
-    def __init__(self, value=44):
-        self.value = value
+    def __init__(self, compartment, ic, time = [0, 10]):
+        self.ic = ic
+        self.time = time
+        self.result = [[]] * compartment
 
