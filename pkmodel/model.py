@@ -24,6 +24,15 @@ class Model(Solution):
     def sim(self, initial_condition):
         self.result = scipy.integrate.solve_ivp(self.eqn, [0, self.time], self.ic, max_step = 0.01)
 
-    def plot(self):
-        plt.plot(np.array(self.result.t), np.array(self.result.y))
+    def plot(self, legend = None):
+        plt.plot(np.array(self.result.t), np.array(self.result.y).T)
+        plt.xlabel("t")
+        plt.ylabel("Consentration")
+        if len(self.ic) == 2:
+            plt.legend(["c", "p1"], shadow = True)
+        elif len(self.ic) == 3:
+            plt.legend(["p0", "c", "p1"], shadow = True)
+        else:
+            plt.legend(legend, shadow = True)
+        plt.title("PK Model Simulation")
         plt.show()
