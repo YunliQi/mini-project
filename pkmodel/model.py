@@ -25,5 +25,5 @@ class Model(Solution):
         self.result = scipy.integrate.solve_ivp(self.eqn, [0, self.time], self.ic, max_step = 0.01)
 
     def plot(self):
-        plt.plot(np.array(self.result.t), np.array(self.result.y))
+        plt.plot(np.array(self.result.t), np.array(self.result.y).T)
         plt.show()
