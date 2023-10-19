@@ -31,4 +31,3 @@ def test_attributes():
     npt.assert_equal(sim_object.result, [[], [], []])
     npt.assert_equal(sim_object.time, 10)
 
-
