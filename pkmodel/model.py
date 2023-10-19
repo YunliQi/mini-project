@@ -17,11 +17,21 @@ class Model(Solution):
         an example paramter
 
     """
-    def __init__(self, governing_eqn, compartment = 2):
-        self.eqn = governing_eqn
-        super().__init__(compartment, ic = [0] * compartment, time = 10)
+    def __init__(self, governing_eqn, dose_proto, dose = 0, compartment = 2):
+        if dose_proto == ("steady" or "Steady"):
+            def eqn(t, y):
+                return governing_eqn(t, y, dose)
+            self.eqn = eqn
+            super().__init__(compartment, ic = [0] * compartment, time = 10)
+        elif dose_proto == ("instantaneous" or "Instantaneous"):
+            def eqn(t,y):
+                return governing_eqn(t, y, dose)
+            self.eqn = eqn
+            super().__init__(compartment, ic = [dose] + [0] * (compartment - 1), time = 10)
+        else:
+            raise ValueError("You need to specify the type of dose protocol correctly")
 
-    def sim(self, initial_condition):
+    def sim(self):
         self.result = scipy.integrate.solve_ivp(self.eqn, [0, self.time], self.ic, max_step = 0.01)
 
     def plot(self, legend = None):
