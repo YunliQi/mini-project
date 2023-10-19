@@ -2,7 +2,6 @@
 # Protocol class
 
 from pkmodel.model import Model
-from pkmodel.solution import Solution
 
 class intravenous(Model):
     """A Pharmokinetic (PK) protocol
@@ -18,8 +17,8 @@ class intravenous(Model):
         if amount < 0:
             raise ValueError("Amount has to be non-negative.")
         def intra(t, y, Dose):
-            y[0] = Dose - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)
-            y[1] = Qp1 * (y[0] / Vc - y[1] / Vp1)
+            y[0] = Dose - y[0]/Vc * CL - Qp1 * (y[0]/Vc - y[1]/Vp1)
+            y[1] = Qp1 * (y[0]/Vc - y[1]/Vp1)
             return y
         super().__init__(intra, Dose, dose = amount)   
 class subcutaneous(Model):
@@ -37,8 +36,8 @@ class subcutaneous(Model):
             raise ValueError("Amount has to be non-negative.")
         def sub(t, y, Dose):
             y[0] = Dose - ka * y[0]
-            y[1] = ka * y[0] - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)
-            y[2] = Qp1 * (y[0] / Vc - y[1] / Vp1)
+            y[1] = ka * y[0] - y[0]/Vc * CL - Qp1 * (y[0]/Vc - y[1]/Vp1)
+            y[2] = Qp1 * (y[0]/Vc - y[1]/Vp1)
             return y
         super().__init__(sub, Dose, dose = amount, compartment = 3)
 
