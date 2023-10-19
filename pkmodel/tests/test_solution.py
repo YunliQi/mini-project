@@ -1,5 +1,7 @@
-import unittest
-from your_module import Solution  # Adjust the module name
+import pytest
+import numpy.testing as npt
+import numpy as np
+from pkmodel.solution import Solution
 
 
 class TestSolution(unittest.TestCase):
@@ -28,7 +30,3 @@ class TestSolution(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             Solution(compartment=2, ic=[1, 2, 3])
-
-
-if __name__ == '__main__':
-    unittest.main()

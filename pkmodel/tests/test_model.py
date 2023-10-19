@@ -1,30 +1,34 @@
-import unittest
-import pkmodel as pk
 import pytest
-import scipy
 import numpy.testing as npt
 import numpy as np
-import matplotlib.pyplot as plt
-
-def exponential_decay(t, y): return -0.5 * y
 
 from pkmodel.model import Model
-a = Model(exponential_decay, compartment = 1)
-sim_object= a.sim(a.ic)
-class test_sim(sim_object):
-    sim_object.result = scipy.integrate.solve_ivp(sim_object.eqn, [0, sim_object.time], sim_object.ic, max_step = 0.01)
-    npt.assert_almost_equal(sim_object.result.y[5], 0.1 * np.exp(-0.5 * sim_object.result.t)[5], decimal=2)
 
+def exponential_decay(t, y, Dose): 
+    return Dose - 0.5 * y
 
-from pkmodel import solution 
+def test_sim_instantaneous():
+    sim_object = Model(exponential_decay, 'instantaneous', dose = 0.1, compartment = 1)
+    sim_object.sim()
+    npt.assert_almost_equal(sim_object.result.y[0], 0.1 * np.exp(-0.5 * sim_object.result.t), decimal=2)
 
-class test_plot(sim_object):
-    """
-    Tests the :class:`Model` class.
-    """
-    from pkmodel.model import plot
-    plt.plot(np.array(sim_object.result.t), np.array(sim_object.result.y))
-    plt.show()
+def test_sim_steady():
+    sim_object = Model(exponential_decay, 'steady', dose = 0.1, compartment = 1)
+    sim_object.sim()
+    npt.assert_almost_equal(sim_object.result.y[0], 0.2 * (1 - np.exp(-0.5 * sim_object.result.t)), decimal=2)
 
+def test_sim_error():
+    with pytest.raises(ValueError):
+        error_expected = Model(exponential_decay, 'abc', compartment = 1)
+
+def test_attributes():
+    sim_object = Model(exponential_decay, 'instantaneous', dose = 0.1, compartment = 3)
+    npt.assert_equal(sim_object.ic, [0.1, 0, 0])
+    npt.assert_equal(sim_object.result, [[], [], []])
+    npt.assert_equal(sim_object.time, 10)
+    sim_object = Model(exponential_decay, 'steady', dose = 0.1, compartment = 3)
+    npt.assert_equal(sim_object.ic, [0, 0, 0])
+    npt.assert_equal(sim_object.result, [[], [], []])
+    npt.assert_equal(sim_object.time, 10)
 
 
