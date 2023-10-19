@@ -29,6 +29,6 @@ Three more methods are introduced:
  - `plot` method is used for plotting simulation solutions
  - `compare` method is used for comparing plots of two different models
 
-### protocol.py: classes named `intravenous` and `subcutaneous` are defined here. 
+### `protocol.py`: classes named `intravenous` and `subcutaneous` are defined here. 
 
 They are both subclasses of `Model`. When you specify every parameters needed in the model, specify the dosing protocol and dosing amount, a default model will be created. 
