@@ -31,3 +31,6 @@ def test_attributes():
     npt.assert_equal(sim_object.result, [[], [], []])
     npt.assert_equal(sim_object.time, 10)
 
+def test_plot_error():
+    with pytest.raises(AssertionError):
+        error_expected = Model(exponential_decay, 'steady', dose = 0.1, compartment = 1).plot()
