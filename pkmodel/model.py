@@ -25,7 +25,7 @@ class Model(Solution):
             super().__init__(compartment, ic = [0] * compartment, time = 10)
         elif dose_proto == ("instantaneous" or "Instantaneous"):
             def eqn(t,y):
-                return governing_eqn(t, y, dose)
+                return governing_eqn(t, y, 0)
             self.eqn = eqn
             super().__init__(compartment, ic = [dose] + [0] * (compartment - 1), time = 10)
         else:

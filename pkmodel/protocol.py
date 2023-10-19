@@ -15,6 +15,8 @@ class intravenous(Model):
 
     """
     def __init__(self, Vc, Vp1, CL, Qp1, amount = 0, Dose = 'steady'):
+        if amount < 0:
+            raise ValueError("Amount has to be non-negative.")
         def intra(t, y, Dose):
             y[0] = Dose - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)
             y[1] = Qp1 * (y[0] / Vc - y[1] / Vp1)
@@ -31,6 +33,8 @@ class subcutaneous(Model):
 
     """
     def __init__(self, Vc, Vp1, CL, Qp1, ka, amount = 0, Dose = 'steady'):
+        if amount < 0:
+            raise ValueError("Amount has to be non-negative.")
         def sub(t, y, Dose):
             y[0] = Dose - ka * y[0]
             y[1] = ka * y[0] - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)

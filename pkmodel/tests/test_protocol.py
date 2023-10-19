@@ -1,37 +1,29 @@
-import unittest
-from your_module import intravenous, subcutaneous  # Adjust the module name
+import pytest
+import numpy.testing as npt
+from pkmodel.protocol import intravenous, subcutaneous  # Adjust the module name
 
-class TestPharmokineticModels(unittest.TestCase):
+def intra(t, y, Dose):
+    y[0] = Dose - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)
+    y[1] = Qp1 * (y[0] / Vc - y[1] / Vp1)
+    return y
 
-    def test_intravenous_steady(self):
-        instance = intravenous(amount=10, Vc=1, Vp1=1, CL=1, Qp1=1, Dose='steady')
-        self.assertTrue(callable(instance.eqn))
+def sub(t, y, Dose):
+    y[0] = Dose - ka * y[0]
+    y[1] = ka * y[0] - y[0] / Vc * CL - Qp1 * (y[0] / Vc - y[1] / Vp1)
+    y[2] = Qp1 * (y[0] / Vc - y[1] / Vp1)
+    return y
 
-    def test_intravenous_instantaneous(self):
-        instance = intravenous(amount=10, Vc=1, Vp1=1, CL=1, Qp1=1, Dose='instantaneous')
-        self.assertTrue(callable(instance.eqn))
-        self.assertEqual(instance.ic, [10, 0])
+def test_int_attribute():
+    test = intravenous(1, 1, 1, 1, amount = 1, Dose = 'steady')
+    npt.assert_equal(test.ic, [0, 0])
+    test = intravenous(1, 1, 1, 1, amount = 1, Dose = 'instantaneous')
+    npt.assert_equal(test.ic, [1, 0])
+    test = subcutaneous(1, 1, 1, 1, 1, amount = 1, Dose = 'steady')
+    npt.assert_equal(test.ic, [0, 0, 0])
+    test = subcutaneous(1, 1, 1, 1, 1, amount = 1, Dose = 'instantaneous')
+    npt.assert_equal(test.ic, [1, 0, 0])
+    with pytest.raises(ValueError):
+        test = intravenous(1, 1, 1, 1, amount = -1, Dose = 'steady')
+    with pytest.raises(ValueError):
+        test = subcutaneous(1, 1, 1, 1, 1, amount = -1, Dose = 'steady')
 
-    def test_subcutaneous_steady(self):
-        instance = subcutaneous(amount=10, Vc=1, Vp1=1, CL=1, Qp1=1, ka=1, Dose='steady')
-        self.assertTrue(callable(instance.eqn))
-        # Assuming Model initializes some attribute "compartment" that's passed to it
-        self.assertEqual(instance.compartment, 3)
-
-    def test_subcutaneous_instantaneous(self):
-        instance = subcutaneous(amount=10, Vc=1, Vp1=1, CL=1, Qp1=1, ka=1, Dose='instantaneous')
-        self.assertTrue(callable(instance.eqn))
-        # Assuming Model initializes some attribute "compartment" that's passed to it
-        self.assertEqual(instance.compartment, 3)
-        self.assertEqual(instance.ic, [10, 0, 0])
-
-    def test_incorrect_dose(self):
-        with self.assertRaises(ValueError):
-            intravenous(amount=10, Vc=1, Vp1=1, CL=1, Qp1=1, Dose='incorrect_dose')
-
-        with self.assertRaises(ValueError):
-            subcutaneous(amount=10, Vc=1, Vp1=1, CL=1, Qp1=1, ka=1, Dose='incorrect_dose')
-
-
-if __name__ == '__main__':
-    unittest.main()
