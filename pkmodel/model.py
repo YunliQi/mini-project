@@ -46,3 +46,30 @@ class Model(Solution):
             plt.legend(legend, shadow = True)
         plt.title("PK Model Simulation")
         plt.show()
+
+    def compare(self, another_model, legend_current = None, legend_out = None):
+        figure, axis = plt.subplots(1, 2)
+        figure.tight_layout(pad = 4, h_pad = 4)
+
+        axis[0].plot(np.array(self.result.t), np.array(self.result.y).T) 
+        axis[0].set_title("Current Model")
+        axis[0].set_xlabel("t")
+        axis[0].set_ylabel("Consentration")
+        if len(self.ic) == 2:
+            axis[0].legend(["c", "p1"], shadow = True)
+        elif len(self.ic) == 3:
+            axis[0].legend(["p0", "c", "p1"], shadow = True)
+        else:
+            axis[0].legend(legend_current, shadow = True)
+
+        axis[1].plot(np.array(another_model.result.t), np.array(another_model.result.y).T) 
+        axis[1].set_title("The Other Model")
+        axis[1].set_xlabel("t")
+        if len(another_model.ic) == 2:
+            axis[1].legend(["c", "p1"], shadow = True)
+        elif len(another_model.ic) == 3:
+            axis[1].legend(["p0", "c", "p1"], shadow = True)
+        else:
+            axis[1].legend(legend_out, shadow = True)
+
+        plt.show()
