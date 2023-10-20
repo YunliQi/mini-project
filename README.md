@@ -5,7 +5,7 @@ This is a package to simulate the PK models finished by Yunli Qi, Dou Hong and J
 ## An Overview
 
 This project has the following features:
- - It is pip installable. You can use the following command to install this project as a package: `pip install your/path/to/this/this/folder`
+ - It is pip installable. You can use the following command to install this project as a package: `pip install your/path/to/this/folder`
  - In the folder `tests` under `pkmodel`, you can find unit tests of functions in this project. Code coverage can be 100% when excluding code to plot and code to input a default model.
  - Everything is on the github and a automated workflow to run unit tests mentioned above is enabled using Github Action.
 

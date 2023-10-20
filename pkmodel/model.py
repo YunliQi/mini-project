@@ -13,8 +13,17 @@ class Model(Solution):
     Parameters
     ----------
 
-    value: numeric, optional
-        an example paramter
+    governing_eqn: callable
+        The governing equation for the PK model, which takes time (t) and state vector (y) as inputs.
+
+    dose_proto: str
+        The type of dose protocol, either "steady" or "instantaneous."
+
+    dose: numeric, optional
+        The dose amount, under "steady", it will be the rate of steady dosing, under "instantaneous", it will be the amount injected at the beginning (default is 0, but recommend to specify under "instantaneous" dosing).
+
+    compartment: int, optional
+        The number of compartments in the PK model (default is 2).
 
     """
     def __init__(self, governing_eqn, dose_proto, dose = 0, compartment = 2):
