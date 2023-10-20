@@ -7,9 +7,28 @@ class Solution:
 
     Parameters
     ----------
+    compartment: int
+        The number of compartments in the PK model.
+    ic: list
+        Initial conditions for each compartment.
+    time: numeric, optional
+        The duration of the simulation (default is 10).
 
-    value: numeric, optional
-        an example paramter
+    Attributes
+    ----------
+    ic: list
+        List of initial conditions for each compartment.
+    time: numeric
+        Duration of the simulation.
+    result: list
+        List to store simulation results for each compartment.
+
+    Raises
+    ------
+    ValueError
+        - If `compartment` is less than or equal to 0.
+        - If the length of `ic` does not match the specified `compartment`.
+        - If `time` is negative.
 
     """
     def __init__(self, compartment: int, ic, time = 10):
